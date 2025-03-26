@@ -1,5 +1,6 @@
 package com.felipedubiella.tip_calculator_20
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -74,6 +75,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        binding.btnClear.setOnClickListener {
+
+           clean()
+
+        }
+
 
         binding.btnCalculate.setOnClickListener {
 
@@ -93,22 +100,27 @@ class MainActivity : AppCompatActivity() {
                 val tips = totalTemp * percentage / 100
                 val totalWithTips = totalTemp + tips
 
-                binding.tvResult.text = "Total with tips: $totalWithTips"
-
+                val intent = Intent(this, summaryActivity::class.java)
+                intent.putExtra("totalTable", totalTable)
+                intent.putExtra("numPeople", numPeople)
+                intent.putExtra("totalWithTips", totalWithTips)
+                intent.putExtra("percentage", percentage)
+                clean()
+                startActivity(intent)
             }
 
 
         }
 
-        binding.btnClear.setOnClickListener {
-
-            binding.spinnerNumberOfPeople.clearFocus()
-            binding.billTotal.text?.clear()
-            binding.rgPercentage.clearCheck()
-            binding.tvResult.text = ""
-
-        }
-
 
     }
+
+    private fun clean(){
+
+        binding.billTotal.text?.clear()
+        binding.rgPercentage.clearCheck()
+
+    }
+
+
 }
