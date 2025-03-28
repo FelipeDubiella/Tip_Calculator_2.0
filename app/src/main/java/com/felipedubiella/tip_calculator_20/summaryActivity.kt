@@ -23,7 +23,7 @@ class summaryActivity : AppCompatActivity() {
                 val totalTable = bundle?.getFloat( "totalTable")
                 val numPeople = bundle?.getInt( "numPeople")
                 val totalWithTips = bundle?.getFloat( "totalWithTips")
-                val percentage = bundle?.getInt( "percentage")
+                val percentage = bundle?.getFloat( "percentage")
 
             binding.tvTotalTable.text = totalTable.toString()
             binding.tvNumPeople.text = numPeople.toString()

@@ -21,59 +21,9 @@ private lateinit var binding: ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        var percentage: Int = 0
-
-        binding.rbOptionOne.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                percentage = 10
-            }
-        }
-
-        binding.rbOptionTwo.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                percentage = 15
-            }
-        }
-
-        binding.rbOptionThree.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                percentage = 20
-            }
-        }
-
-        val adapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.numOfPeople,
-            android.R.layout.simple_spinner_item
-        )
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerNumberOfPeople.adapter = adapter
-
-        var numOfPeopleSelected = 0
-        binding.spinnerNumberOfPeople.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    pos: Int,
-                    id: Long
-                ) {
-                    numOfPeopleSelected = pos
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                }
-            }
 
         binding.btnClear.setOnClickListener {
 
@@ -85,15 +35,20 @@ class MainActivity : AppCompatActivity() {
         binding.btnCalculate.setOnClickListener {
 
             val totalTableTemp = binding.billTotal.text
+            val numPeopleTemp = binding.edtNumPeople.text
+            val percentageTemp = binding.edtPercentage.text
 
-            if (totalTableTemp?.isEmpty() == true) {
+            if (totalTableTemp?.isEmpty() == true ||
+                numPeopleTemp?.isEmpty() == true ||
+                percentageTemp?.isEmpty() == true) {
 
                 Snackbar.make(binding.billTotal, "Fill all the fields", Snackbar.LENGTH_LONG).show()
 
             } else {
 
                 val totalTable: Float = totalTableTemp.toString().toFloat()
-                val numPeople: Int = numOfPeopleSelected + 1
+                val numPeople: Int = numPeopleTemp.toString().toInt()
+                val percentage: Float = percentageTemp.toString().toFloat()
 
 
                 val totalTemp = totalTable / numPeople
@@ -118,7 +73,8 @@ class MainActivity : AppCompatActivity() {
     private fun clean(){
 
         binding.billTotal.text?.clear()
-        binding.rgPercentage.clearCheck()
+        binding.edtNumPeople.text?.clear()
+        binding.edtPercentage.text?.clear()
 
     }
 
